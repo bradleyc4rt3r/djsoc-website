@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<html>
+    <head>
+      <title>Split Tracks</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+      <link rel="stylesheet" href="assets/css/main.css" />
+      <link rel="icon" href="http://su-djsoc.co.uk/favicon.ico" type="image/x-icon">
+      <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    </head>
+    <body class="no-sidebar is-preload">
+    <div id="page-wrapper">
+
+    <!-- Header -->
+    <div id="header">
+
+      <!-- Inner -->
+      <div class="inner">
+        <header>
+          <h1><a href="Split Tracks" id="logo">Split Tracks</a></h1>
+        </header>
+      </div>
+
+      <!-- Nav -->
+      <div>
+        <nav id="nav">
+          <ul>
+            <li><a href="index">Home</a></li>
+            <li><a href="committee">Committee</a></li>
+            <li><a href="events">Events</a></li>
+            <li><a href="tracks">Tracks</a></li>
+            <li><a href="shop">Shop</a>
+              <ul>
+                <li><a href="#">Merch</a></li>
+                <li><a href="#">Rentals</a></li>
+              </ul>
+            </li>
+            <li><a href="contact">Contact Us</a></li>
+            <li><a href="upload-training">Split Tracks (beta)</a>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Main -->
+      <div class="wrapper style1">
+        <div class="container">
+          <h3>Unfortunately in beta, this functionality will only be available for Swansea University DJ Society Members.<h3/>
+            <br />
+            <br />
+          <article id="main" class="special">
+            <header>
+              <h2>Our Aim</h2>
+              <h4>Split any track into stems, in browser, quickly and painlessly.</h4>
+              <br>
+              </header>
+            </div>
+            <div class="container">
+                <h4>
+                  Our main goal is to seamlessly allow the general public to pick the lead vocals, bass, piano and more from <strong>ANY</strong> track.
+                  We're also working on allowing the public to train our model with us, giving you access to upload a full track and up to <strong>5</strong> stems for our training model to feast on.
+                  Every song and stem our model listens to will increase it's accuracy, meaning eventually we should be able to produce AI split stems of extremely high quality.
+                </h4>
+              <br>
+                <h4>
+                  Our machine learning algorithm is powered by the latest software in AI driven splitting thanks to <a href="https://deezer.io/releasing-spleeter-deezer-r-d-source-separation-engine-2b88985e797e"><u>Spleeter</u></a></li>. We currently have the ability to split into <strong>2</strong> stems, <strong>4</strong> stems and <strong>5</strong> stems each taking longer than the last.
+                  In the future we our plans are to allow you to split many songs at once, each of a different format and theoretically infinite in size and length.
+                </h4>
+              <br>
+                <h3>
+                  Acceptable File formats:
+                </h3>
+              <div class="container">
+                <h4>
+                  <br>
+                  <li>mp3</li>
+                  <li>mpeg</li>
+                  <li>wav</li>
+                  <li>flac</li>
+                  <li>ogg</li>
+                  <li>m4a</li>
+                  <li>wma</li>
+                </h4>
+               </div>
+             <br />
+          </article>
+        </div>
+
+      <!-- upload form -->
+      <section id="upload">
+        <div class="special">
+          <h2 class="instructions-header">Instructions</h2>
+          <br>
+          <ol>
+            <li><h4> 1. Upload any track below to our secure servers, as long as it's a format in our list, we'll split it!</h4></li>
+            <li><h4> 2. Click upload. If you're worried about copyright or dirty dub traders we have you covered, all uploaded tracks are stored temporarily for the duration of the split. We do not store tunes unless you specifically ask us to.</h4></li>
+            <li><h4> 3. Keep an eye on the progress bar, and download your brand new stems when they're ready.</h4></li>
+          </ol>
+        </div>
+
+        <h1 class="upload-header">Upload</h1>
+        <div class="row">
+          <div class="container col-lg-6">
+            <div id="uploadbox" class=" upload-box mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+              <div class="panel panel-info">
+                <div class="panel-body">
+                  <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                  <form class="form-horizontal form" role="form" id="form1" action="/" method="GET">
+                </div>
+
+                <div class="custom-file input-group file-input">
+                  <input type="file" name="complete-track" id="files" class="inputfile custom-file-input">
+                  <label class="custom-file-label" for="files">Complete Track</label>
+                  <small>Error message</small>
+                </div>
+
+                <div class="col-sm-12 controls">
+                  <button type="submit" class="btn btn-primary" action="/opt/sudjsoc-spleeter/main.sh">Upload</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div id="container">
+          <a href="https://deezer.io/releasing-spleeter-deezer-r-d-source-separation-engine-2b88985e797e"></a>
+          <img src="./Mockup/images/Spleeter.png" alt="">
+        </div>
+        <script type="text/javascript">
+          (function() {
+            var img = document.getElementById('container').firstChild;
+            img.onload = function() {
+              if(img.height > img.width) {
+                img.height = '100%';
+                img.width = 'auto';
+              }
+            };
+
+          }());
+        </script>
+      </div>
+    </section>
+
+      <!-- Footer -->
+      <div id="footer">
+        <div class="container">
+          <div class="row">
+
+            <div class="col-12">
+
+              <!-- Contact -->
+              <section class="contact">
+                <header>
+                  <h3>Socials</h3>
+                </header>
+                <p>Catch us on all these social media platforms. Give us a like and a follow to keep up to date with all our work!</p>
+                <ul class="icons">
+                  <li><a href="https://www.facebook.com/sudjsoc/" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                  <li><a href="https://www.instagram.com/sudjsoc/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                  <li><a href="https://soundcloud.com/sudjsoc" class="icon brands fa-soundcloud"><span class="label">Soundcloud</span></a></li>
+                  <li><a href="#" class="icon brands fa-snapchat"><span class="label">Snapchat</span></a></li>
+                </ul>
+              </section>
+
+              <!-- Copyright -->
+              <div class="copyright">
+                <ul class="menu">
+                  <li>&copy; SUDJSoc. All rights reserved.</li><li>Design: <a href="https://www.facebook.com/dan.taylor.1800721">DJ Duzzy T</a></li><li>Powered by: <a href="https://deezer.io/releasing-spleeter-deezer-r-d-source-separation-engine-2b88985e797e">Spleeter</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.dropotron.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

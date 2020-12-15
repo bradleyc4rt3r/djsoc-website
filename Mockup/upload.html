@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Upload Tracks</title>
+
+  <!-- css style sheets -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/main.css">
+
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- BootStrap Scripts -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  <!--font awesome icons-->
+  <script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+
+  <script defer src="script.js"></script>
+
+</head>
+
+<body>
+
+  <section id="about">
+
+    <div class="container-fluid">
+      <!-- Nav Bar -->
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand">Upload Tracks!</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#upload">Upload</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#footer">Conatact</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- About -->
+      <div class="row">
+        <div class="col-lg-6" style="">
+          <h1 class="about-header">Our Aim</h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+            aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+
+        <div class="col-lg-6" style="" class="how-it-works">
+          <h1 class="about-header">How it works</h1>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
+            specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        </div>
+
+        <div class="col-lg-6">
+          <img class="spleeter-image" src="images/Spleeter.png" alt="Spleeter-image">
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- upload form -->
+  <section id="upload">
+
+    <h1 class="upload-header">Upload</h1>
+    <div class="row">
+      <div class="container col-lg-6">
+        <div id="uploadbox" class=" upload-box mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+          <div class="panel panel-info">
+            <div class="panel-body">
+              <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+              <form class="form-horizontal form" role="form" id="form1" action="/" method="GET">
+            </div>
+
+            <div class="form-control file-type-input">
+              <label for="file-type">File type:</label>
+              <select name="file-type" id="file-type" class="" onchange="getSelectFileType();" class="browser-default custom-select">
+                <option value="" disabled selected>Please Select</option>
+                <option value="mpeg">mp3</option>
+                <option value="wav">wav</option>
+                <option value="ogg">ogg</option>
+                <option value="m4a">m4a</option>
+                <option value="wma">wma</option>
+                <option value="flac">flac</option>
+              </select>
+              <i class="fas fa-check-circle icon"></i>
+              <i class="fas fa-exclamation-circle icon"></i>
+              <small>Error message</small>
+            </div>
+
+            <div class="custom-file input-group file-input">
+              <input type="file" name="complete-track" id="complete-track" class="inputfile custom-file-input">
+              <label class="custom-file-label" for="complete-track">Complete Track</label>
+              <i class="fas fa-check-circle icon"></i>
+              <i class="fas fa-exclamation-circle icon"></i>
+              <small>Error message</small>
+            </div>
+
+            <div class="custom-file input-group file-input">
+              <input type="file" name="vocals-track" id="vocals-track" class="custom-file-input">
+              <label class="custom-file-label" for="vocalstrack">Vocal Track</label>
+              <i class="fas fa-check-circle icon"></i>
+              <i class="fas fa-exclamation-circle icon"></i>
+              <small>Error message</small>
+            </div>
+            <div class="custom-file input-group file-input">
+              <input type="file" name="drums-track" id="drums-track" class="custom-file-input">
+              <label class="custom-file-label" for="drums-track">Drums Track</label>
+              <i class="fas fa-check-circle icon"></i>
+              <i class="fas fa-exclamation-circle icon"></i>
+              <small>Error message</small>
+            </div>
+            <div class="custom-file input-group file-input">
+              <input type="file" name="bass-track" id="bass-track" class="custom-file-input">
+              <label class="custom-file-label" for="bass-track">Bass Track</label>
+              <i class="fas fa-check-circle icon"></i>
+              <i class="fas fa-exclamation-circle icon"></i>
+              <small>Error message</small>
+            </div>
+
+            <div class="input-group">
+              <div class="checkbox">
+                <label for="accept-terms" class="form-check-label">
+                  <input type="checkbox" id="accept-terms">I have read and agree to the Terms & Conditions</label>
+                <i class="fas fa-exclamation-circle icon"></i>
+                <small>Error message</small>
+              </div>
+            </div>
+
+            <div style="margin-top:10px" class="upload-tracks-btn form-group">
+              <!-- Upload Tracks Button -->
+              <div class="col-sm-12 controls">
+                <button type="submit" class="btn btn-primary" action="">Upload</button>
+              </div>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 instructions">
+        <h2 class="instructions-header">Instructions</h2>
+        <p class="">
+        <ol>
+          <li>Please ensure you have seperated your track into 3 seperate tracks, one containing only the vocal from the track
+            , one containg only the drums from the track and the final containing only the bass from the track.</li>
+          <li>Select the file type you wish to upload</li>
+          <li>Choose your corrosponding files to upload, and click submit :)</li>
+        </ol>
+      </div>
+
+
+
+
+  </section>
+
+
+  <!-- Footer -->
+  <footer class="white-section" id="footer">
+    <div class="container-fluid">
+      <p>Catch us on all these social media platforms. Give us a like and a follow to keep up to date with all our work!</p>
+      <a href="https://www.facebook.com/sudjsoc"><i class="social-icon fab fa-facebook"></i></a>
+      <a href="https://soundcloud.com/sudjsoc"><i class="social-icon fab fa-soundcloud"></i></a>
+      <a href="https://www.instagram.com/sudjsoc/?hl=en"><i class="social-icon fab fa-instagram"></i></a>
+      <a href="mailto:dj@swansea-societies.ac.uk"><i class="social-icon fas fa-envelope"></i></a>
+
+      <p>&copy; SUDJSoc. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+
+
+</body>
+
+</html>
