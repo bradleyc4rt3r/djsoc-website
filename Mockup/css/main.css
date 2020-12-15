@@ -1,0 +1,160 @@
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 3.5rem;
+}
+
+select {
+  border-radius: 5px;
+}
+
+/* navBar */
+
+.navbar {
+  padding-bottom: 4.5rem;
+  padding-left: 0;
+}
+.navbar-brand {
+  font-weight: 700;
+}
+
+.nav-item {
+  padding: 0 18px;
+}
+
+
+/* About Section */
+#about {
+  background-color: #79bac1;
+}
+
+.about-header{
+  padding-bottom: 3%;
+}
+
+.upload-header{
+  padding-top: 20px;
+}
+
+form {
+  width: 500px;
+}
+
+.container-fluid {
+  padding: 3% 7%;
+}
+
+/* Upload Section */
+#upload {
+  background-color: #f1f3f4;
+}
+
+.upload-box {
+  max-width: 600px;
+  margin-top: 50px;
+}
+
+.upload-track-pannel {
+  float: right;
+  font-size: 80%;
+  position: relative;
+  top: -10px;
+}
+
+.panel-body {
+  padding-top: 10px
+}
+
+.file-input {
+  margin-bottom: 25px;
+}
+
+.file-type-input {
+  margin-bottom: 10px;
+}
+
+.checkbox {
+  padding-top: 50px;
+}
+
+.upload-tracks-btn {
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.file-type-input {
+  padding-bottom: 10px;
+}
+
+.input-group small {
+  visibility: hidden;
+}
+
+.input-group .icon {
+  visibility: hidden;
+}
+
+.file-type-input small {
+  visibility: hidden;
+}
+
+.file-type-input .icon {
+  visibility: hidden;
+}
+
+/* Sucess styling */
+.success label {
+  border-color: #2ecc71;
+}
+
+.success .fa-check-circle {
+  color: #2ecc71;
+  visibility: visible;
+}
+
+.success select {
+  border-color: #2ecc71;
+}
+
+/* error styling */
+.error label {
+  border-color: #e74c3c;
+}
+
+.error .fa-exclamation-circle {
+  color: #e74c3c;
+  visibility: visible;
+}
+
+.error small {
+  color: #e74c3c;
+  visibility: visible;
+}
+
+.error select {
+  border-color: #e74c3c;
+}
+
+
+/* FOOTER */
+.social-icon {
+  margin: 10px 20px;
+  font-size: 30px;
+  width: 50px;
+  text-align: center;
+  text-decoration: none;
+}
+
+#footer {
+    background: #512b58;
+    height: 100px;
+    margin: auto;
+    width: 400px;
+    text-align:center;
+    padding:10px;
+    color:#ffffff;
+}
