@@ -7,6 +7,7 @@
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
       <link rel="stylesheet" href="assets/css/main.css" />
+      <link rel="stylesheet" href="assets/css/loadwheel.css" />
       <link rel="icon" href="http://su-djsoc.co.uk/favicon.ico" type="image/x-icon">
       <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
     </head>
@@ -116,7 +117,7 @@
                 </div>
 
                 <div class="col-sm-12 controls">
-                  <button type="submit" class="btn btn-primary" action="/opt/sudjsoc-spleeter/main.sh">Upload</button>
+                  <button onclick="loadWheel()" type="submit" class="btn btn-primary">Upload</button>
                 </div>
               </div>
             </div>
@@ -138,6 +139,16 @@
             };
 
           }());
+        </script>
+        <script>
+        function loadWheel() {
+          var x = document.getElementById("myDIV");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+            }
+          }
         </script>
       </div>
     </section>
