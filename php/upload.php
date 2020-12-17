@@ -2,49 +2,50 @@
 
 $target_dir = "/data/uploads/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-$uploadOk = 1;
 $fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 $filename = basename($_FILES["fileToUpload"]["name"]);
-$zipFile = "/data/complete/" . $filename . "/" . $filename .".zip"
+$zipFile = "/data/complete/" . $filename . "/" . $filename .".zip";
+$split_dir = "/data/envs/" . $filename;
+$output_dir = "/data/complete" . $filename . "/";
 
 // Check if audio format is allowed
 $allowedExts = array('.mp3', '.wav', '.mpeg', '.wav', '.flac', '.ogg', 'm4a', 'wma');
 if(isset($_POST["submit"])) {
-  if(in_array($filetype, $allowedExts)) {
+  if(in_array($fileType, $allowedExts)) {
     echo "Audio format is correct - " . $fileType . ".";
     $returnCode = 0;
-    
+
     } else {
         echo "File format is not allowed.";
         $returnCode = 1;
-    }
+  }
 }
 
-public function prepEnv() {
-    $split_dir = "/data/envs/" . $filename;
+function prepEnv($split_dir) {
     if (!file_exists($split_dir)) {
         mkdir($split_dir);
         } 
     }
     try {
         if (!move_uploaded_file($target_file, $split_dir)) {
-            throw new Exception('could not move file: ' . $target_file);
             $returnCode = 1;
+            throw new Exception('could not move file: ' . $target_file);
         }        
         echo "Upload Complete!";
         $returnCode = 0;
-    } catch (Exception $e) {
-        die ("File did not upload -  " . $e -> getMessage());
     }
+    catch (Exception $e) {
+        die ("File did not upload -  " . $e -> getMessage());
 }
 
-public function activateSpleeter() {
+function activateSpleeter($filename) {
     echo "Activating Spleeter, this may take awhile...";
     shell_exec("bash -i /var/www/html/activate-spleeter.sh" . $filename);
 }
 
 
-public function zipFiles() {
+function zipFiles($filename, $zipFile) {
+
     // Get real path for our folder
     $rootPath = realpath('/data/complete/' . $filename . '/');
 
@@ -77,58 +78,28 @@ public function zipFiles() {
     $zip->close();
 }
 
-public function emailZip() {
+function emailZip($filename) {
     $zipName = $filename . '.zip';
-    $fileNoExt = preg_replace('/\\.[^.\\s]{3,4}$/', '', $zipName);
-    $zipDir = "/data/complete" . $filename;
+    $zipDir = "/data/complete/" . $filename;
     // get email from form input from user
-    $emailRecipient = "bradleyc4rt3r@gmail.com"
+    $emailRecipient = "bradleyc4rt3r@gmail.com";
     shell_exec('/var/www/html/email.sh' . ' ' . $zipName . ' ' . $zipDir . ' ' . $emailRecipient);
     echo "Please check your emails.";
 }
 
-
-$output_dir = "/data/complete" . $filename . "/";
 if($returnCode == 0) {
     try{
-        prepEnv();
-        activateSpleeter();    
+        prepEnv($split_dir);
+        activateSpleeter($filename);
         if(!file_exists($output_dir)) {
             throw new Exception("Split unsuccessful: " . $filename);
         }
         echo "Split Complete!";
-        emailZip();
+        zipFiles($filename, $zipFile);
+        emailZip($filename);
     } catch (Exception $e) {
         die ($e -> getMessage());
     }    
 } else {
-    echo "An unknown problem occured...";
+    echo "An unknown problem occurred...";
 }
-
-=======
-<?php
-$target = "upload/";
-$target = $target . basename( $_FILES['uploaded']['name']) ;
-$ok=1;
-
-if ($uploaded_size > 350000) {
-    echo "Your file is too large.";
-    $ok=0;
-}
-if ($uploaded_type =="text/php") {
-    echo "No PHP files";
-    $ok=0;
-}
-if ($ok==0) {
-Echo "Sorry, your file was not uploaded";
-}
-else {
-    if(move_uploaded_file($_FILES['uploaded']['tmp_name'], $target)) {
-        echo "The file ". basename( $_FILES['uploadedfile']['name']). " has been uploaded";
-         }
-    else {
-        echo "Sorry, there was a problem uploading your file.";
-    }
-}
-
-?>
