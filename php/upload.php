@@ -54,8 +54,6 @@ function prepEnv($split_dir, $filename) {
 function activateSpleeter($filename) {
     echo "Activating Spleeter, this may take awhile...";
     chdir('/var/www/html/');
-    echo "CWD: ". getcwd();
-    echo "Shell arg: " . $filename;
     $shell_command = "bash -i ./activate-spleeter.sh " . $filename;
     shell_exec($shell_command);
 }
@@ -64,7 +62,7 @@ function activateSpleeter($filename) {
 function zipFiles($filename, $zipFile) {
 
     // Get real path for our folder
-    $rootPath = realpath('/data/complete/' . $filename . '/');
+    $rootPath = realpath('/data/complete/' . preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '/');
 
     // Initialize archive object
     $zip = new ZipArchive();
