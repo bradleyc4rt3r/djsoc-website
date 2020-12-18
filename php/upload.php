@@ -1,55 +1,67 @@
 <?php
 
-$target_dir = "/data/uploads/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-$fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-$filename = basename($_FILES["fileToUpload"]["name"]);
-$zipFile = "/data/complete/" . $filename . "/" . $filename .".zip";
-$split_dir = "/data/envs/" . $filename;
-$output_dir = "/data/complete" . $filename . "/";
+// Verify Upload
+$allowedExts = array('mp3', 'wav', 'mpeg', 'wav', 'flac', 'ogg', 'm4a', 'wma');
+if(isset($_POST['submit'])) {
+    $filename = str_replace(' ', '', basename($_FILES["fileToUpload"]["name"]));
+    echo $filename;
+    $fileNameCmps = explode(".", $filename);
+    $fileType = strtolower(end($fileNameCmps));
+    $zipFile = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) .".zip";
+    $split_dir = "/data/envs/" . $filename . "/";
+    $output_dir = "/data/complete/" . preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . "/";
 
-// Check if audio format is allowed
-$allowedExts = array('.mp3', '.wav', '.mpeg', '.wav', '.flac', '.ogg', 'm4a', 'wma');
-if(isset($_POST["submit"])) {
-  if(in_array($fileType, $allowedExts)) {
-    echo "Audio format is correct - " . $fileType . ".";
-    $returnCode = 0;
-
+    if(in_array($fileType, $allowedExts)) {
+        echo "Audio format is correct - " . $fileType . ".";
+        $returnCode = 0;
     } else {
-        echo "File format is not allowed.";
         $returnCode = 1;
+        die("File format is not allowed.");
   }
+} else {
+    die("Not a POST request.");
 }
 
-function prepEnv($split_dir) {
-    if (!file_exists($split_dir)) {
-        mkdir($split_dir);
-        } 
-    }
+function prepEnv($split_dir, $filename) {
+
     try {
-        if (!move_uploaded_file($target_file, $split_dir)) {
+        if (!is_dir("/data/envs/" . $filename . "/")) {
+            shell_exec('mkdir /data/envs/' . $filename);
+            shell_exec('chmod 0777 /data/envs/' . $filename);
+            #mkdir("/data/envs/" . $_FILES["fileToUpload"]["name"] . "/", 0777, true);
+        }
+    } catch (Exception $e) {
+        die ("Could not create directory: " . $split_dir);
+    }
+
+
+    try {
+        global $returnCode;
+        global $split_dir;
+        echo $split_dir;
+        $target_file = '/data/envs/' . $filename . "/" . $filename;
+        if (!move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
             $returnCode = 1;
-            throw new Exception('could not move file: ' . $target_file);
-        }        
+            throw new Exception('Could not move file: ' . $filename);
+        }
         echo "Upload Complete!";
         $returnCode = 0;
+    } catch (Exception $e) {
+        die ($e->getMessage());
     }
-    catch (Exception $e) {
-        die ("File did not upload -  " . $e -> getMessage());
 }
 
 function activateSpleeter($filename) {
     echo "Activating Spleeter, this may take awhile...";
-    shell_exec("bash -i /var/www/html/activate-spleeter.sh" . $filename);
+    chdir('/var/www/html/');
+    $shell_command = "bash -i ./activate-spleeter.sh " . $filename;
+    shell_exec($shell_command);
 }
 
 
 function zipFiles($filename, $zipFile) {
 
-    // Get real path for our folder
-    $rootPath = realpath('/data/complete/' . $filename . '/');
-
-    // Initialize archive object
+    $rootPath = realpath('/data/complete/' . preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '/');
     $zip = new ZipArchive();
     $zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
@@ -62,26 +74,30 @@ function zipFiles($filename, $zipFile) {
 
     foreach ($files as $name => $file)
     {
-        // Skip directories (they would be added automatically)
         if (!$file->isDir())
         {
-            // Get real and relative path for current file
             $filePath = $file->getRealPath();
             $relativePath = substr($filePath, strlen($rootPath) + 1);
-
-            // Add current file to archive
             $zip->addFile($filePath, $relativePath);
         }
     }
-
-    // Zip archive will be created only after closing object
     $zip->close();
 }
 
 function emailZip($filename) {
-    $zipName = $filename . '.zip';
-    $zipDir = "/data/complete/" . $filename;
-    // get email from form input from user
+    $zipName = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '.zip';
+    $zipDir = "/data/complete/" . preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
+    $zipPath = $zipDir . '/' . $zipName;
+    $oldZipPath = "/var/www/html/" . $zipName;
+
+    if(!rename($oldZipPath, $zipPath)) {
+        throw new Exception("Could not move zip: " . $zipName);
+    }
+    else {
+        echo "File moved!";
+    }
+
+    //TODO:Get email from form input from user form
     $emailRecipient = "bradleyc4rt3r@gmail.com";
     shell_exec('/var/www/html/email.sh' . ' ' . $zipName . ' ' . $zipDir . ' ' . $emailRecipient);
     echo "Please check your emails.";
@@ -89,17 +105,22 @@ function emailZip($filename) {
 
 if($returnCode == 0) {
     try{
-        prepEnv($split_dir);
+        global $filename;
+        global $output_dir;
+        global $zipFile;
+        prepEnv($split_dir, $filename);
         activateSpleeter($filename);
+
         if(!file_exists($output_dir)) {
             throw new Exception("Split unsuccessful: " . $filename);
+        } else {
+            echo "Split Complete!";
+            zipFiles($filename, $zipFile);
+            emailZip($filename);
         }
-        echo "Split Complete!";
-        zipFiles($filename, $zipFile);
-        emailZip($filename);
     } catch (Exception $e) {
         die ($e -> getMessage());
-    }    
+    }
 } else {
     echo "An unknown problem occurred...";
 }
