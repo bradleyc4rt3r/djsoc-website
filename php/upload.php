@@ -7,7 +7,7 @@ if(isset($_POST['submit'])) {
     echo $filename;
     $fileNameCmps = explode(".", $filename);
     $fileType = strtolower(end($fileNameCmps));
-    $zipFile = "/data/complete/" . $filename . "/" . $filename .".zip";
+    $zipFile = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) .".zip";
     $split_dir = "/data/envs/" . $filename . "/";
     $output_dir = "/data/complete/" . preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . "/";
 
@@ -61,10 +61,7 @@ function activateSpleeter($filename) {
 
 function zipFiles($filename, $zipFile) {
 
-    // Get real path for our folder
     $rootPath = realpath('/data/complete/' . preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '/');
-
-    // Initialize archive object
     $zip = new ZipArchive();
     $zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
@@ -77,25 +74,20 @@ function zipFiles($filename, $zipFile) {
 
     foreach ($files as $name => $file)
     {
-        // Skip directories (they would be added automatically)
         if (!$file->isDir())
         {
-            // Get real and relative path for current file
             $filePath = $file->getRealPath();
             $relativePath = substr($filePath, strlen($rootPath) + 1);
-
-            // Add current file to archive
             $zip->addFile($filePath, $relativePath);
         }
     }
-
-    // Zip archive will be created only after closing object
     $zip->close();
 }
 
 function emailZip($filename) {
     $zipName = $filename . '.zip';
-    $zipDir = "/data/complete/" . $filename;
+    $zipDir = "/data/complete/" . preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
+
     // get email from form input from user
     $emailRecipient = "bradleyc4rt3r@gmail.com";
     shell_exec('/var/www/html/email.sh' . ' ' . $zipName . ' ' . $zipDir . ' ' . $emailRecipient);
@@ -110,7 +102,6 @@ if($returnCode == 0) {
         prepEnv($split_dir, $filename);
         activateSpleeter($filename);
 
-        echo $output_dir;
         if(!file_exists($output_dir)) {
             throw new Exception("Split unsuccessful: " . $filename);
         } else {
