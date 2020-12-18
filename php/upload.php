@@ -1,6 +1,6 @@
 <?php
 
-// Check if audio format is allowed
+// Verify Upload
 $allowedExts = array('mp3', 'wav', 'mpeg', 'wav', 'flac', 'ogg', 'm4a', 'wma');
 if(isset($_POST['submit'])) {
     $filename = str_replace(' ', '', basename($_FILES["fileToUpload"]["name"]));
@@ -85,10 +85,19 @@ function zipFiles($filename, $zipFile) {
 }
 
 function emailZip($filename) {
-    $zipName = $filename . '.zip';
+    $zipName = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '.zip';
     $zipDir = "/data/complete/" . preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
+    $zipPath = $zipDir . '/' . $zipName;
+    $oldZipPath = "/var/www/html/" . $zipName;
 
-    // get email from form input from user
+    if(!rename($oldZipPath, $zipPath)) {
+        throw new Exception("Could not move zip: " . $zipName);
+    }
+    else {
+        echo "File moved!";
+    }
+
+    //TODO:Get email from form input from user form
     $emailRecipient = "bradleyc4rt3r@gmail.com";
     shell_exec('/var/www/html/email.sh' . ' ' . $zipName . ' ' . $zipDir . ' ' . $emailRecipient);
     echo "Please check your emails.";
