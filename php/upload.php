@@ -11,7 +11,7 @@ if(isset($_POST['submit'])) {
     $output_dir = "/data/complete/" . preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . "/";
 
     if(in_array($fileType, $allowedExts)) {
-        #echo "Audio format is correct - " . $fileType . ".";
+        echo "Audio format is correct - " . $fileType . ".";
         $returnCode = 0;
     } else {
         $returnCode = 1;
@@ -41,7 +41,6 @@ function prepEnv($split_dir, $filename) {
             $returnCode = 1;
             throw new Exception('Could not move file: ' . $filename);
         }
-        #echo "Upload Complete!";
         $returnCode = 0;
     } catch (Exception $e) {
         die ($e->getMessage());
@@ -49,7 +48,6 @@ function prepEnv($split_dir, $filename) {
 }
 
 function activateSpleeter($filename) {
-    #echo "Activating Spleeter, this may take awhile...";
     chdir('/var/www/html/');
     $shell_command = "bash -i ./activate-spleeter.sh " . $filename;
     shell_exec($shell_command);
@@ -98,6 +96,7 @@ function downloadZip($filename, $zipFile){
         header('Content-Disposition: attachment; filename=' . $zipFile);
         readfile($zipFile);
     }
+
 }
 // Main
 
@@ -112,7 +111,6 @@ if($returnCode == 0) {
         if(!file_exists($output_dir)) {
             throw new Exception("Split unsuccessful: " . $filename);
         } else {
-            #echo "Split Complete!";
             zipFiles($filename, $zipFile);
             downloadZip($filename, $zipFile);
         }
