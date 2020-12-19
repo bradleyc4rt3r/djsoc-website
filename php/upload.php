@@ -4,7 +4,6 @@
 $allowedExts = array('mp3', 'wav', 'mpeg', 'wav', 'flac', 'ogg', 'm4a', 'wma');
 if(isset($_POST['submit'])) {
     $filename = str_replace(' ', '', basename($_FILES["fileToUpload"]["name"]));
-    echo $filename;
     $fileNameCmps = explode(".", $filename);
     $fileType = strtolower(end($fileNameCmps));
     $zipFile = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) .".zip";
@@ -37,14 +36,11 @@ function prepEnv($split_dir, $filename) {
 
     try {
         global $returnCode;
-        global $split_dir;
-        echo $split_dir;
         $target_file = '/data/envs/' . $filename . "/" . $filename;
         if (!move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
             $returnCode = 1;
             throw new Exception('Could not move file: ' . $filename);
         }
-        echo "Upload Complete!";
         $returnCode = 0;
     } catch (Exception $e) {
         die ($e->getMessage());
@@ -52,7 +48,6 @@ function prepEnv($split_dir, $filename) {
 }
 
 function activateSpleeter($filename) {
-    echo "Activating Spleeter, this may take awhile...";
     chdir('/var/www/html/');
     $shell_command = "bash -i ./activate-spleeter.sh " . $filename;
     shell_exec($shell_command);
@@ -84,24 +79,26 @@ function zipFiles($filename, $zipFile) {
     $zip->close();
 }
 
-function emailZip($filename) {
-    $zipName = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '.zip';
-    $zipDir = "/data/complete/" . preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
-    $zipPath = $zipDir . '/' . $zipName;
-    $oldZipPath = "/var/www/html/" . $zipName;
+function downloadZip($filename, $zipFile){
+    if(isset($_POST['submit'])) {
+        $zipDir = "/data/complete/" . preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
+        $zipPath = $zipDir . '/' . $zipFile;
+        $oldZipPath = "/var/www/html/" . $zipFile;
 
-    if(!rename($oldZipPath, $zipPath)) {
-        throw new Exception("Could not move zip: " . $zipName);
-    }
-    else {
-        echo "File moved!";
+        if(!rename($oldZipPath, $zipPath)) {
+            throw new Exception("Could not move zip: " . $zipFile);
+        }
+        else {
+            echo "File moved!";
+        }
+        chdir($zipDir);
+        header('Content-type: application/zip');
+        header('Content-Disposition: attachment; filename=' . $zipFile);
+        readfile($zipFile);
     }
 
-    //TODO:Get email from form input from user form
-    $emailRecipient = "bradleyc4rt3r@gmail.com";
-    shell_exec('/var/www/html/email.sh' . ' ' . $zipName . ' ' . $zipDir . ' ' . $emailRecipient);
-    echo "Please check your emails.";
 }
+// Main
 
 if($returnCode == 0) {
     try{
@@ -114,9 +111,8 @@ if($returnCode == 0) {
         if(!file_exists($output_dir)) {
             throw new Exception("Split unsuccessful: " . $filename);
         } else {
-            echo "Split Complete!";
             zipFiles($filename, $zipFile);
-            emailZip($filename);
+            downloadZip($filename, $zipFile);
         }
     } catch (Exception $e) {
         die ($e -> getMessage());
